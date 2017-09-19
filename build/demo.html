@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../node_modules/vue/dist/vue.min.js"></script>
+    <script src="../node_modules/axios/dist/axios.min.js"></script>
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div id="app">
+    <a href="javascript:;" @click="get" class="btn btn-info">GET請求</a>
+    <a href="javascript:;" @click="post" class="btn btn-info">POST請求</a>
+    {{message}}
+</div>
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            message: ''
+        },
+        methods: {
+            get: function () {
+                axios.get('package.json', {
+                    params: {
+                        UserId: 123
+                    },
+                    headers: {
+                        Tokke: 'sunke'
+                    }
+                }).then((res) => {
+                    this.message = res.data
+                })
+            },
+            post: function () {
+                axios.post('package.json', {
+                    headers: {
+                        Tokke: 'sunke'
+                    },
+                    data: {
+                        firstName: 'Fred',
+                        lastName: 'Flintstone'
+                    },
+                    params: {
+                        ID: 123
+                    }
+                }).then((res) => {
+                    console.log(res)
+                    this.message = res.data
+                })
+            },
+        },
+        mounted:function() {
+            axios.interceptors.request.use((res) => {
+                console.log('正確的清瓊');
+                return res;
+            }, (err) => {
+                console.log('錯誤的請求'+err);
+            })
+        }
+    })
+</script>
+</body>
+</html>
